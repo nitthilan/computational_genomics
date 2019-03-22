@@ -1,4 +1,0 @@
-/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/build/CMakeFiles/rebuild_cache.dir
-/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/build/CMakeFiles/edit_cache.dir
-/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/build/CMakeFiles/gene_compare_main.dir
-/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/build/CMakeFiles/suffix_tree_main.dir
