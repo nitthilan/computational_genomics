@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/fasta_read.cpp
+stdio.h
+-
+stdlib.h
+-
+unistd.h
+-
+string.h
+-
+fasta_read.h
+/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/fasta_read.h
+
+/Users/kannappanjayakodinitthilan/Documents/myfolder/project_devan/course/computational_genomics/programming/Program2-NitthilanKannappanJayakodi/fasta_read.h
+
