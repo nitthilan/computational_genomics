@@ -41,7 +41,7 @@ void read_input_sequence(char *filename, input_data_t *p_input_data){
 	start_seq = 0; cur_seq_idx = -1;
 	rewind(fp);
 	for(int i = 0; i < 2; i++){
-		p_input_data->p_char_in_seq[i] = (char *)malloc(MAX_CHAR_IN_LINE*num_lines_in_seq[i]*sizeof(char) + 1);
+		p_input_data->p_char_in_seq[i] = (char *)malloc(MAX_CHAR_IN_LINE*num_lines_in_seq[i]*sizeof(char) + 2);
 		if(p_input_data->p_char_in_seq[i] == NULL){
 			printf("Cannot allocate memory for sequence (%d) copy. %d\n", i, num_lines_in_seq[i]);
 			exit(-1);

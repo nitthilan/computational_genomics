@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "fasta_read.h"
+#include "suffix_tree.h"
 
 // https://eecs.wsu.edu/~ananth/CptS571/Lectures/index.htm
 // https://www.eecs.wsu.edu/~ananth/CptS571/Programs/Program2/index.htm
@@ -39,6 +40,10 @@ int main(int argc, char **argv){
 	// Read alphabet file
 	alphabets_t s_alphabets;
 	read_alphabets(p_alphabet_filename, &s_alphabets);
+
+	// build a suffix tree
+	st_node_t **pp_st_root;
+	st_construct(&s_input_data, &s_alphabets, pp_st_root)
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
