@@ -43,7 +43,7 @@ int main(int argc, char **argv){
 
 	// build a suffix tree
 	st_node_t **pp_st_root;
-	st_construct(&s_input_data, &s_alphabets, pp_st_root)
+	st_construct(&s_input_data, &s_alphabets, pp_st_root);
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
