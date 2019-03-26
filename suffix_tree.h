@@ -1,5 +1,5 @@
-#ifndef __SUFFIX_LINK_H__
-#define __SUFFIX_LINK_H__
+#ifndef __SUFFIX_TREE_H__
+#define __SUFFIX_TREE_H__
 
 typedef struct _st_node_t_ {
 	int node_idx; // Unique id for each node
@@ -13,4 +13,4 @@ typedef struct _st_node_t_ {
 
 void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root);
 
-#endif //__SUFFIX_LINK_H__
+#endif //__SUFFIX_TREE_H__

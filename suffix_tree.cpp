@@ -59,10 +59,30 @@ st_node_t *create_node(int node_idx, int leaf_idx,
 	return p_node;
 }
 
+void dfs(st_node_t *p_root_node){
+	st_node_t *p_parent_node = p_root_node;
+	if(p_parent_node){
+		dfs(p_parent_node->p_child);
+		// if(p_parent_node->leaf_idx != -1){
+		// 	printf("Node idx %d, %d, \n",p_parent_node->node_idx,
+		// 		p_parent_node->leaf_idx);
+		// }
+		printf("Node idx %d, %d, \n",p_parent_node->node_idx,
+				p_parent_node->leaf_idx);
+		dfs(p_parent_node->p_sibling);
+	}
+}
+
 void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int size_of_seq){
 
 	st_node_t *p_parent_node = p_root_node;
 	int cur_char_offset = leaf_offset;
+
+	for(int i=leaf_offset; i<size_of_seq; i++){
+		printf("%c, ", p_char_in_seq[i]);
+	}
+	printf("\n Current character index %d \n", leaf_offset);
+
 	// Iterate the depth of the tree from root to leaf
 	while(p_parent_node){
 		// Compare the edge label of each children starting from the leftmost sibling
@@ -85,6 +105,7 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 						break;
 					}
 				}
+				break;
 			}
 			// if the character did not match and character is lesser than current value
 			// it is a mismatch
@@ -94,8 +115,6 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 			p_prev_sib_node = p_sib_node;
 			p_sib_node = p_sib_node->p_sibling;
 		}
-
-
 		// Based on whether the siblings match or not we have three cases
 		// is_match_found = 0 : If no match is found, add this character sequence as a new node
 		if(is_match_found == 0){
@@ -118,6 +137,9 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 		}
 		// is_match_found = 2 : Its a partial match. So break and introduce a new node
 		if(is_match_found == 2){
+			printf("Current node matching %d %d 0x%x %d\n", is_match_found, partial_match_offset,
+				p_sib_node,
+				cur_char_offset + partial_match_offset);
 			// Create a intemediate node and introduce the sequence as its child
 			st_node_t *p_new_node = create_node(-1, p_sib_node->leaf_idx, (st_node_t *)0 /*TBD*/, 
 				p_sib_node->p_child /*child */, 
@@ -132,6 +154,7 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 				(st_node_t *)0 /*child */, 
 				cur_char_offset + partial_match_offset, size_of_seq, p_sib_node->string_depth+1, 
 				(st_node_t *)0 /*Update this after comparing between the two new nodes */);
+
 			// Maintaining the ordering of siblings
 			if(p_char_in_seq[p_sib_node->edge_label[0] + partial_match_offset] < 
 			   p_char_in_seq[cur_char_offset + partial_match_offset]){
@@ -174,11 +197,12 @@ void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_
 
 	pp_st_root[0] = create_node(0, -1, (st_node_t *)0, (st_node_t *)0, 0, 0, 0, (st_node_t *)0);
 
-
 	// For each suffix insert
 	for(int i = 0; i < num_char_in_seq; i++){
 		// Implement pushing
 		find_path(pp_st_root[0], p_char_in_seq, i, num_char_in_seq);
+		dfs(pp_st_root[0]);
+		printf("End of loop %d\n", i);
 	}
 
 }

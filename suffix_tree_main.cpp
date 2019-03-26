@@ -42,8 +42,8 @@ int main(int argc, char **argv){
 	read_alphabets(p_alphabet_filename, &s_alphabets);
 
 	// build a suffix tree
-	st_node_t **pp_st_root;
-	st_construct(&s_input_data, &s_alphabets, pp_st_root);
+	st_node_t *p_st_root;
+	st_construct(&s_input_data, &s_alphabets, &p_st_root);
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
