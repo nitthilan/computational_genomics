@@ -11,6 +11,18 @@ typedef struct _st_node_t_ {
 	struct _st_node_t_ *p_sibling;
 }st_node_t;
 
+typedef struct _suffix_link_info_t_ {
+	// Input for node_hop, Output for find path
+	st_node_t *p_u_node;
+	st_node_t *p_u_dash_node;
+	// int beta; This info is present in u_node
+	// Output for node_hop, Input for find path
+	st_node_t *p_v_node;
+	st_node_t *p_v_dash_node;
+	// int alpha; This infor is present in v_node string_depth
+}suffix_link_info_t;
+
+void st_construct_unoptimised(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root);
 void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root);
 
 #endif //__SUFFIX_TREE_H__
