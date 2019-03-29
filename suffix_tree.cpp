@@ -33,6 +33,8 @@
 // 	}
 // }
 
+// Logic used:
+// https://eecs.wsu.edu/~ananth/CptS571/Lectures/iScribe_STconstruction_McCreightsAlgo.pdf
 
 int GLOBAL_NODE_IDX = 0;
 // Wrapper function for initialising tha node
@@ -81,30 +83,39 @@ void dfs(st_node_t *p_root_node, char *p_char_in_seq){
 		// 	printf("Node idx %d, %d, \n",p_parent_node->node_idx,
 		// 		p_parent_node->leaf_idx);
 		// }
-		int suf_node_idx = -1;
-		if(p_parent_node->p_suffix){
-			suf_node_idx = p_parent_node->p_suffix->node_idx;
+
+		if(p_parent_node->node_idx == 1883 || p_parent_node->node_idx == 2114){
+
+			int suf_node_idx = -1;
+			if(p_parent_node->p_suffix){
+				suf_node_idx = p_parent_node->p_suffix->node_idx;
+			}
+			printf("Node idx %d, %d, %d, %d [",p_parent_node->node_idx,
+					p_parent_node->leaf_idx, p_parent_node->string_depth,
+					suf_node_idx);
+
+			int end_idx = p_parent_node->edge_label[1];
+			if(p_parent_node->edge_label[1] > p_parent_node->edge_label[0] + 10){
+				end_idx = p_parent_node->edge_label[0] + 10;
+			}
+			for(int i=p_parent_node->edge_label[0] ; i < end_idx; i++){
+				printf("%c ", p_char_in_seq[i]);
+			}
+			printf("] [");
+			st_node_t *p_child = p_parent_node->p_child;
+			while(p_child){
+				printf("%d ",p_child->node_idx);
+				p_child = p_child->p_sibling;
+			}
+			printf("]\n");
 		}
-		printf("Node idx %d, %d, %d, %d [",p_parent_node->node_idx,
-				p_parent_node->leaf_idx, p_parent_node->string_depth,
-				suf_node_idx);
-		for(int i=p_parent_node->edge_label[0] ; i < p_parent_node->edge_label[1]; i++){
-			printf("%c ", p_char_in_seq[i]);
-		}
-		printf("] [");
-		st_node_t *p_child = p_parent_node->p_child;
-		while(p_child){
-			printf("%d ",p_child->node_idx);
-			p_child = p_child->p_sibling;
-		}
-		printf("]\n");
 
 		dfs(p_parent_node->p_sibling, p_char_in_seq);
 	}
 }
 
 void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int size_of_seq,
-	suffix_link_info_t *p_sl_info){
+	suffix_link_info_t *p_sl_info, int leaf_idx){
 
 	st_node_t *p_parent_node = p_root_node;
 	st_node_t *p_prev_parent_node = p_sl_info->p_v_dash_node;
@@ -148,7 +159,7 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 		if(is_match_found == 0){
 			// Add the character sequence into current parent node
 			// The new node created is a leaf node and leaf node uses the offset as the index
-			st_node_t *p_new_node = create_node(-1, leaf_offset, (st_node_t *)0 /*TBD*/, 
+			st_node_t *p_new_node = create_node(-1, leaf_idx, (st_node_t *)0 /*TBD*/, 
 				(st_node_t *)0 /*child */, 
 				cur_char_offset, size_of_seq, p_parent_node->string_depth, 
 				p_sib_node);
@@ -162,6 +173,8 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 				p_parent_node->p_child = p_new_node;
 				// This condition doesnot happen other than the root node case since other cases would always split and generate two node minimum
 			}
+			// printf("Create node %d\n", p_new_node->node_idx);
+
 			// All cases should result in the parent knowing suffix links
 			// Since either it would be aroot node or internal which would have been created earlier
 			if(p_parent_node->p_suffix){
@@ -181,7 +194,7 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 			// 	cur_char_offset + partial_match_offset);
 			int parent_string_depth = p_sib_node->string_depth - (p_sib_node->edge_label[1] - p_sib_node->edge_label[0] - partial_match_offset);
 			// Create a intemediate node and introduce the sequence as its child
-			st_node_t *p_new_node = create_node(-1, p_sib_node->leaf_idx, (st_node_t *)0 /*TBD*/, 
+			st_node_t *p_new_node = create_node(-1, p_sib_node->leaf_idx, p_sib_node->p_suffix, 
 				p_sib_node->p_child /*child */, 
 				p_sib_node->edge_label[0] + partial_match_offset, 
 				p_sib_node->edge_label[1], 
@@ -191,8 +204,9 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 			p_sib_node->edge_label[1] = p_sib_node->edge_label[0] + partial_match_offset;
 			p_sib_node->leaf_idx = -1;
 			p_sib_node->string_depth = parent_string_depth;
+			p_sib_node->p_suffix = (st_node_t *)0;
 
-			st_node_t *p_new_leaf_node = create_node(-1, leaf_offset, (st_node_t *)0 /*TBD*/, 
+			st_node_t *p_new_leaf_node = create_node(-1, leaf_idx, (st_node_t *)0 /*TBD*/, 
 				(st_node_t *)0 /*child */, 
 				cur_char_offset + partial_match_offset, size_of_seq, 
 				parent_string_depth, 
@@ -248,11 +262,15 @@ void st_construct_unoptimised(input_data_t *p_input_data, alphabets_t *p_alphabe
 
 	pp_st_root[0] = create_node(0, -1, (st_node_t *)0, (st_node_t *)0, 0, 0, 0, (st_node_t *)0);
 
+	suffix_link_info_t s_sl_info; //dummy ignore for this function
+	fill_suffix_link_info(&s_sl_info, pp_st_root[0], (st_node_t *)0);
+	s_sl_info.p_v_node = (st_node_t *)0;
+	s_sl_info.p_v_dash_node = (st_node_t *)0;
+
 	// For each suffix insert
 	for(int i = 0; i < num_char_in_seq; i++){
-		suffix_link_info_t s_sl_info; //dummy ignore for this function
 		// Implement pushing
-		find_path(pp_st_root[0], p_char_in_seq, i, num_char_in_seq, &s_sl_info);
+		find_path(pp_st_root[0], p_char_in_seq, i, num_char_in_seq, &s_sl_info, i);
 		dfs(pp_st_root[0], p_char_in_seq);
 		printf("End of loop %d\n", i);
 	}
@@ -297,6 +315,7 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 		st_node_t *p_prev_parent_node = (st_node_t *)0;
 		st_node_t *p_parent_node = p_suffix;
 		st_node_t *p_child_node = p_suffix->p_child;
+		// printf("Did it crash here???\n"); 
 		while(beta){
 			while(p_child_node){
 				if(p_char_in_seq[p_child_node->edge_label[0]] == p_char_in_seq[u_start_idx]){
@@ -305,11 +324,14 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 
 					if(beta >= edge_length){
 						beta -= edge_length;
+						u_start_idx += edge_length;
 					}
 					else{
+
 						// create new node and make beta zero
 						// int parent_string_depth = p_child_node->string_depth - (p_child_node->edge_label[1] - p_child_node->edge_label[0]);
-						st_node_t *p_new_node = create_node(-1, p_child_node->leaf_idx, (st_node_t *)0 /*TBD*/, 
+						st_node_t *p_new_node = create_node(-1, p_child_node->leaf_idx, 
+							p_child_node->p_suffix, /* The lower node would store the suffix link information */
 							p_child_node->p_child /*child */, 
 							p_child_node->edge_label[0] + beta, 
 							p_child_node->edge_label[1], 
@@ -323,19 +345,50 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 						p_child_node->string_depth -= \
 							(p_child_node->edge_label[1]-p_child_node->edge_label[0]-beta);
 						p_child_node->edge_label[1] = p_child_node->edge_label[0] + beta;
-						p_prev_parent_node = p_parent_node;
-						p_parent_node = p_child_node;
-						// p_parent_node = p_child_node; // Update the child node to the new parent node
+						p_child_node->p_suffix = (st_node_t *)0;
+
+						// This is a recurrsive case where if the same character keeps happening again and again
+						// we would have to split the node to make it its own suffix link.
+						// When that happens the u node would shift to the lower node or the new node
+						// While the upper node would be the suffix lik for it	
+						if(p_sl_info->p_u_node->node_idx == p_child_node->node_idx){
+							p_sl_info->p_u_node = p_new_node;
+						}
+
+						// p_prev_parent_node = p_parent_node;
+						// p_parent_node = p_child_node;// Update the child node to the new parent node
 						beta = 0;
 					}
+					p_prev_parent_node = p_parent_node;
+					p_parent_node = p_child_node;
 					break;
 				}
-				// iterate through all the siblings
-				p_child_node = p_child_node->p_sibling;
+
+				if(p_child_node->p_sibling){
+					// iterate through all the siblings
+					p_child_node = p_child_node->p_sibling;
+				}
+				// If the sibling does not exist create a node with the necessary sibling and insert
+				else{
+					// This node is a intermediate node for new node to be added later
+					st_node_t *p_new_node = create_node(-1, -1, 
+							(st_node_t *)0, // No suffix info present
+							(st_node_t *)0,  // No child node present
+							u_start_idx, 
+							u_start_idx + beta, 
+							p_parent_node->string_depth, 
+							(st_node_t *)0 /* New node does not have any siblings */);
+					p_child_node->p_sibling = p_new_node;
+					p_child_node = p_child_node->p_sibling;
+					beta = 0;
+
+
+					p_prev_parent_node = p_parent_node;
+					p_parent_node = p_child_node;
+					break;
+				}
 			}
 			if(beta){
-				p_prev_parent_node = p_parent_node;
-				p_parent_node = p_child_node;
 				p_child_node = p_child_node->p_child;
 			}
 			else{
@@ -346,6 +399,12 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 		p_sl_info->p_v_dash_node = p_prev_parent_node;
 		p_sl_info->p_v_node = p_parent_node;
 		p_sl_info->p_u_node->p_suffix = p_parent_node;
+
+		// if(p_sl_info->p_u_node->node_idx == p_sl_info->p_u_node->p_suffix->node_idx){
+		// 	printf("How the hell can this happen???\n");
+		// 	exit(-1);
+		// }
+
 		printf("Node Hop U Node WO SL %d, %d\n", p_sl_info->p_v_node->node_idx, beta);
 		// if(beta == 0){
 		// 	p_u_node->p_suffix = p_parent_node;
@@ -357,7 +416,7 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 		return;
 	}
 
-	printf("It should never come to this condition \n");
+	printf("It should never come to this condition %d, %d\n", p_u_node->node_idx, p_u_dash_node->node_idx);
 	exit(-1);
 }
 
@@ -384,19 +443,23 @@ void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_
 	// Initialise the suffix link info with root node
 	suffix_link_info_t s_sl_info;
 	fill_suffix_link_info(&s_sl_info, pp_st_root[0], (st_node_t *)0);
+	s_sl_info.p_v_node = (st_node_t *)0;
+	s_sl_info.p_v_dash_node = (st_node_t *)0;
 
 	// For each suffix do a node_hop to get to node v and then do a find path to insert a node
 	for(int i = 0; i < num_char_in_seq; i++){
-		for(int j=i; j<num_char_in_seq; j++){
-			printf("%c, ", p_char_in_seq[j]);
-		}
-		printf("\nCurrent character index %d \n", i);
+		// for(int j=i; j<num_char_in_seq; j++){
+		// 	printf("%c, ", p_char_in_seq[j]);
+		// }
+		// printf("\n");
+		printf("Current character index %d \n", i);
 		// node_hop used to identify the node to start searching from
 		node_hop(&s_sl_info, p_char_in_seq);
 		dfs(pp_st_root[0], p_char_in_seq);
 		// printf("SL Info %x, %d\n", s_sl_info.p_v_node->node_idx, s_sl_info.p_v_node->string_depth+i);
 		// Implement pushing
-		find_path(s_sl_info.p_v_node, p_char_in_seq, s_sl_info.p_v_node->string_depth+i, num_char_in_seq, &s_sl_info);
+		find_path(s_sl_info.p_v_node, p_char_in_seq, s_sl_info.p_v_node->string_depth+i, 
+			num_char_in_seq, &s_sl_info, i);
 		dfs(pp_st_root[0], p_char_in_seq);
 		printf("End of loop %d\n\n", i);
 	}

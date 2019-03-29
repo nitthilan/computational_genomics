@@ -10,6 +10,8 @@
 // https://www.eecs.wsu.edu/~ananth/CptS571/Programs/Program2/index.htm
 
 // ./suffix_tree_main ../data/suffix_tree/s1.fas ../data/suffix_tree/English_alphabet.txt
+// ./suffix_tree_main ../data/suffix_tree/s2.fas ../data/suffix_tree/English_alphabet.tx
+
 
 int main(int argc, char **argv){
 
@@ -44,6 +46,7 @@ int main(int argc, char **argv){
 	// build a suffix tree
 	st_node_t *p_st_root;
 	st_construct(&s_input_data, &s_alphabets, &p_st_root);
+	// st_construct_unoptimised(&s_input_data, &s_alphabets, &p_st_root);
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
