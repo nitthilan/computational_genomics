@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/gene_compare_main.dir/gene_compare_main.cpp.o CMakeFiles/gene_compare_main.dir/gene_compare.cpp.o CMakeFiles/gene_compare_main.dir/fasta_read.cpp.o  -o gene_compare_main 
