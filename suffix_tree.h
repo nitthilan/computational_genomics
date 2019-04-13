@@ -9,6 +9,7 @@ typedef struct _st_node_t_ {
 	int edge_label[2]; // start and end offset of the edge
 	int string_depth; // Offset to the string from the root
 	struct _st_node_t_ *p_sibling;
+	int leaf_idx_range[2]; // Start and end idx of node
 }st_node_t;
 
 typedef struct _suffix_link_info_t_ {

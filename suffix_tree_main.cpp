@@ -38,10 +38,10 @@ int main(int argc, char **argv){
 	// char *p_char_in_seq[2];
 	input_data_t s_input_data;
 	read_input_sequence(p_fast_filename, &s_input_data);
-	convert_to_small(&s_input_data);
+	// convert_to_small(&s_input_data);
 	// Read alphabet file
 	alphabets_t s_alphabets;
-	read_alphabets(p_alphabet_filename, &s_alphabets);
+	// read_alphabets(p_alphabet_filename, &s_alphabets);
 
 	// build a suffix tree
 	st_node_t *p_st_root;

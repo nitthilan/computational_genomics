@@ -1,0 +1,1 @@
+/Library/Developer/CommandLineTools/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/suffix_tree_main.dir/suffix_tree_main.cpp.o CMakeFiles/suffix_tree_main.dir/suffix_tree.cpp.o CMakeFiles/suffix_tree_main.dir/fasta_read.cpp.o  -o suffix_tree_main 
