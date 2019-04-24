@@ -48,7 +48,13 @@ int main(int argc, char **argv){
 	// Read the input sequences
 	// char *p_char_in_seq[2];
 	input_data_t s_input_data;
-	read_input_sequence(p_filename, &s_input_data);
+	char *p_char_in_seq[2];
+	int num_char_in_seq[2];
+	int num_lines_in_seq[2];
+	s_input_data.pp_char_in_seq = p_char_in_seq;
+	s_input_data.p_num_char_in_seq = num_char_in_seq;
+	s_input_data.p_num_lines_in_seq = num_lines_in_seq;
+	read_input_sequence(p_filename, &s_input_data, 0, 2);
 	// Read config file
 	param_config_t param_config;
 	read_config(p_config_filename, &param_config);
@@ -56,8 +62,8 @@ int main(int argc, char **argv){
 	// printf("%s\n%s\n",s_input_data.p_char_in_seq[0], s_input_data.p_char_in_seq[1]);
 	printf("Scores: match %d, mismatch %d, g %d, h %d\n", param_config.match, param_config.mismatch,
 		param_config.g, param_config.h);
-	printf("Sequence 1 = 's1', length = %d characters\n", s_input_data.num_char_in_seq[1]);
-	printf("Sequence 2 = 's2', length = %d characters\n", s_input_data.num_char_in_seq[0]);
+	printf("Sequence 1 = 's1', length = %d characters\n", s_input_data.p_num_char_in_seq[1]);
+	printf("Sequence 2 = 's2', length = %d characters\n", s_input_data.p_num_char_in_seq[0]);
 
 	dp_state_t dp_state;
 	output_stat_t output_stat;
@@ -66,8 +72,8 @@ int main(int argc, char **argv){
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
-		if(s_input_data.p_char_in_seq[i]){
-			free(s_input_data.p_char_in_seq[i]);
+		if(s_input_data.pp_char_in_seq[i]){
+			free(s_input_data.pp_char_in_seq[i]);
 		}
 	}
 	if(dp_state.p_dp_table){

@@ -66,8 +66,8 @@ void retrace_global_old(input_data_t *p_input_data,
 	param_config_t *p_param_config){
 
 	cell_value_t *p_dp_table = p_dp_state->p_dp_table;
-	int seq_0_len = p_input_data->num_char_in_seq[0];
-	int seq_1_len = p_input_data->num_char_in_seq[1];
+	int seq_0_len = p_input_data->p_num_char_in_seq[0];
+	int seq_1_len = p_input_data->p_num_char_in_seq[1];
 	int i_idx = local_idx_i;
 	int j_idx = local_idx_j;
 	// int off = i_idx*(seq_0_len+1)+j_idx;
@@ -121,12 +121,12 @@ void retrace_global_old(input_data_t *p_input_data,
 				p_dp_table[off].cv[I_IDX]);
 
 			printf("%c, %c, %c, %c, %c, %c\n", 
-				p_input_data->p_char_in_seq[1][i_idx-1],
-				p_input_data->p_char_in_seq[0][j_idx-1],
-				p_input_data->p_char_in_seq[1][i_idx],
-				p_input_data->p_char_in_seq[0][j_idx],
-				p_input_data->p_char_in_seq[1][i_idx+1],
-				p_input_data->p_char_in_seq[0][j_idx+1]);
+				p_input_data->pp_char_in_seq[1][i_idx-1],
+				p_input_data->pp_char_in_seq[0][j_idx-1],
+				p_input_data->pp_char_in_seq[1][i_idx],
+				p_input_data->pp_char_in_seq[0][j_idx],
+				p_input_data->pp_char_in_seq[1][i_idx+1],
+				p_input_data->pp_char_in_seq[0][j_idx+1]);
 
 			exit(0);
 		}
@@ -155,12 +155,12 @@ void retrace_global_old(input_data_t *p_input_data,
 			// p_input_data->p_char_in_seq[0][j_idx-1],
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = \
-				p_input_data->p_char_in_seq[1][i_idx-1];
+				p_input_data->pp_char_in_seq[1][i_idx-1];
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = \
-				p_input_data->p_char_in_seq[0][j_idx-1];
+				p_input_data->pp_char_in_seq[0][j_idx-1];
 			cur_mat_pos+=1;
 
-			if(p_input_data->p_char_in_seq[1][i_idx-1] == p_input_data->p_char_in_seq[0][j_idx-1]){
+			if(p_input_data->pp_char_in_seq[1][i_idx-1] == p_input_data->pp_char_in_seq[0][j_idx-1]){
 				num_match += 1;
 				retrace_score-=ms;
 			}
@@ -176,7 +176,7 @@ void retrace_global_old(input_data_t *p_input_data,
 			// p_input_data->p_char_in_seq[1][i_idx-1],
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = \
-				p_input_data->p_char_in_seq[1][i_idx-1];
+				p_input_data->pp_char_in_seq[1][i_idx-1];
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = '-';
 			cur_mat_pos+=1;
 
@@ -196,7 +196,7 @@ void retrace_global_old(input_data_t *p_input_data,
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = '-';
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = \
-				p_input_data->p_char_in_seq[0][j_idx-1];
+				p_input_data->pp_char_in_seq[0][j_idx-1];
 			cur_mat_pos+=1;
 
 			num_gap += 1;
@@ -226,8 +226,8 @@ void retrace_global_old(input_data_t *p_input_data,
 	p_output_stat->num_open_gap = num_open_gap;
 	p_output_stat->opt_score = global_opt_score;
 	if(!is_global){
-		p_input_data->num_char_in_seq[0] = j_idx-1;
-		p_input_data->num_char_in_seq[1] = i_idx-1;
+		p_input_data->p_num_char_in_seq[0] = j_idx-1;
+		p_input_data->p_num_char_in_seq[1] = i_idx-1;
 		// printf("i, j idx %d, %d\n", i_idx, j_idx);
 	}
 }
@@ -245,8 +245,8 @@ void retrace_global(input_data_t *p_input_data,
 	param_config_t *p_param_config){
 
 	cell_value_t *p_dp_table = p_dp_state->p_dp_table;
-	int seq_0_len = p_input_data->num_char_in_seq[0];
-	int seq_1_len = p_input_data->num_char_in_seq[1];
+	int seq_0_len = p_input_data->p_num_char_in_seq[0];
+	int seq_1_len = p_input_data->p_num_char_in_seq[1];
 	int i_idx = local_idx_i;
 	int j_idx = local_idx_j;
 	int off = i_idx*(seq_0_len+1)+j_idx;
@@ -317,12 +317,12 @@ void retrace_global(input_data_t *p_input_data,
 			// p_input_data->p_char_in_seq[0][j_idx-1],
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = \
-				p_input_data->p_char_in_seq[1][i_idx-1];
+				p_input_data->pp_char_in_seq[1][i_idx-1];
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = \
-				p_input_data->p_char_in_seq[0][j_idx-1];
+				p_input_data->pp_char_in_seq[0][j_idx-1];
 			cur_mat_pos+=1;
 
-			if(p_input_data->p_char_in_seq[1][i_idx-1] == p_input_data->p_char_in_seq[0][j_idx-1]){
+			if(p_input_data->pp_char_in_seq[1][i_idx-1] == p_input_data->pp_char_in_seq[0][j_idx-1]){
 				num_match += 1;
 				retrace_score-=ms;
 			}
@@ -347,7 +347,7 @@ void retrace_global(input_data_t *p_input_data,
 			// p_input_data->p_char_in_seq[1][i_idx-1],
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = \
-				p_input_data->p_char_in_seq[1][i_idx-1];
+				p_input_data->pp_char_in_seq[1][i_idx-1];
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = '-';
 			cur_mat_pos+=1;
 
@@ -378,7 +378,7 @@ void retrace_global(input_data_t *p_input_data,
 			// i_idx-1, j_idx-1);
 			p_output_stat->p_output_trace[2*cur_mat_pos] = '-';
 			p_output_stat->p_output_trace[2*cur_mat_pos+1] = \
-				p_input_data->p_char_in_seq[0][j_idx-1];
+				p_input_data->pp_char_in_seq[0][j_idx-1];
 			cur_mat_pos+=1;
 
 			num_gap += 1;
@@ -408,8 +408,8 @@ void retrace_global(input_data_t *p_input_data,
 	p_output_stat->num_open_gap = num_open_gap;
 	p_output_stat->opt_score = global_opt_score;
 	if(!is_global){
-		p_input_data->num_char_in_seq[0] = j_idx-1;
-		p_input_data->num_char_in_seq[1] = i_idx-1;
+		p_input_data->p_num_char_in_seq[0] = j_idx-1;
+		p_input_data->p_num_char_in_seq[1] = i_idx-1;
 		// printf("i, j idx %d, %d\n", i_idx, j_idx);
 	}
 }
@@ -423,8 +423,8 @@ void find_alignment(input_data_t *p_input_data,
 	int is_global,
 	output_stat_t *p_output_stat){
 
-	int seq_0_len = p_input_data->num_char_in_seq[0];
-	int seq_1_len = p_input_data->num_char_in_seq[1];
+	int seq_0_len = p_input_data->p_num_char_in_seq[0];
+	int seq_1_len = p_input_data->p_num_char_in_seq[1];
 	int table_size = (seq_0_len+1)*(seq_1_len+1);
 	int max_length = seq_0_len+seq_1_len;
 
@@ -440,8 +440,8 @@ void find_alignment(input_data_t *p_input_data,
 		exit(-1);
 	}
 	cell_value_t *p_dp_table = p_dp_state->p_dp_table;
-	char *p_seq_0 = p_input_data->p_char_in_seq[0];
-	char *p_seq_1 = p_input_data->p_char_in_seq[1];
+	char *p_seq_0 = p_input_data->pp_char_in_seq[0];
+	char *p_seq_1 = p_input_data->pp_char_in_seq[1];
 
 	// Initialise the cost
 	int ms = p_param_config->match;
@@ -539,5 +539,12 @@ void find_alignment(input_data_t *p_input_data,
 	else {
 		retrace_global(p_input_data, p_dp_state, is_global,
 			local_idx_i, local_idx_j, p_output_stat, p_param_config);
+	}
+
+	if(p_dp_state->p_dp_table){
+		free(p_dp_state->p_dp_table);
+	}
+	if(p_output_stat->p_output_trace){
+		free(p_output_stat->p_output_trace);
 	}
 }

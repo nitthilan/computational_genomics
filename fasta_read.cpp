@@ -5,8 +5,47 @@
 
 #include "fasta_read.h"
 
+void skip_n_inputs(FILE *fp, int num_input_to_skip){
+	char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+	while (num_input_to_skip) {
+		if((read = getline(&line, &len, fp)) != -1){
+			if(line[0] == '>'){
+				num_input_to_skip--;
+			}
+		}
+		else{
+			break;
+		}
+	}
+	if (line)
+        free(line);
+}
+
+int get_num_fasta(char *filename){
+	FILE *fp;
+	char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int cur_seq_idx;
+	fp = fopen(filename, "r");
+	if(fp == NULL){
+		printf("Input file not present. Could not open.\n");
+		exit(-1);
+	}
+	while ((read = getline(&line, &len, fp)) != -1){
+		if(line[0] == '>'){
+			cur_seq_idx += 1;
+		}
+		// printf("%d. %s\n", cur_seq_idx, line);
+	}
+	return cur_seq_idx;
+}
+
 // Read input sequence
-void read_input_sequence(char *filename, input_data_t *p_input_data){
+void read_input_sequence(char *filename, input_data_t *p_input_data, int num_input_to_skip,
+	int num_seq_to_read){
 
 	FILE *fp;
 	char * line = NULL;
@@ -18,40 +57,52 @@ void read_input_sequence(char *filename, input_data_t *p_input_data){
 		exit(-1);
 	}
 
-	int num_lines_in_seq[2];// num_char_in_seq[2], 
+	int *num_lines_in_seq = p_input_data->p_num_lines_in_seq;// num_char_in_seq[2], 
 	// char *p_char_in_seq[2];
 	int cur_seq_idx = -1, start_seq = 0;
-	int MAX_CHAR_IN_LINE = 70;
+	// int MAX_CHAR_IN_LINE = 70;
+	int seq_cntr = num_seq_to_read+1;
 
+	skip_n_inputs(fp, num_input_to_skip);
 	// Calculate the roung number of lines in the sequence
 	// Since there are roughly 60 characters per line
 	// this helps in allocating memory 
-	while ((read = getline(&line, &len, fp)) != -1) {
+	while (seq_cntr)  {
+		if((read = getline(&line, &len, fp)) == -1){
+			break;
+		}
 		if(line[0] == '>'){
 			cur_seq_idx += 1;
+			seq_cntr--;
 			num_lines_in_seq[cur_seq_idx] = 0;
 			start_seq = 1;
 			continue;
 		}
 		if(start_seq){
-			num_lines_in_seq[cur_seq_idx] += 1;
+			num_lines_in_seq[cur_seq_idx] += read;
 		}
 	}
 	// Reset the variable and allocate memory for copying
 	start_seq = 0; cur_seq_idx = -1;
 	rewind(fp);
-	for(int i = 0; i < 2; i++){
-		p_input_data->p_char_in_seq[i] = (char *)malloc(MAX_CHAR_IN_LINE*num_lines_in_seq[i]*sizeof(char) + 2);
-		if(p_input_data->p_char_in_seq[i] == NULL){
+	skip_n_inputs(fp, num_input_to_skip);
+	for(int i = 0; i < num_seq_to_read; i++){
+		p_input_data->pp_char_in_seq[i] = (char *)malloc(num_lines_in_seq[i]*sizeof(char) + 2);
+		if(p_input_data->pp_char_in_seq[i] == NULL){
 			printf("Cannot allocate memory for sequence (%d) copy. %d\n", i, num_lines_in_seq[i]);
 			exit(-1);
 		}
 	}
-	while ((read = getline(&line, &len, fp)) != -1) {
+	seq_cntr = num_seq_to_read+1;
+	while (seq_cntr)  {
+		if((read = getline(&line, &len, fp)) == -1){
+			break;
+		}
 		// printf("%s, %lu, %ld\n", line, len, read);
 		if(line[0] == '>'){
 			cur_seq_idx += 1;
-			p_input_data->num_char_in_seq[cur_seq_idx] = 0;
+			seq_cntr--;
+			p_input_data->p_num_char_in_seq[cur_seq_idx] = 0;
 			start_seq = 1;
 			continue;
 		}
@@ -66,17 +117,17 @@ void read_input_sequence(char *filename, input_data_t *p_input_data){
 				read -= 1;
 			}
 			
-			if(p_input_data->num_char_in_seq[cur_seq_idx]+read < \
-				MAX_CHAR_IN_LINE*num_lines_in_seq[cur_seq_idx]){
-				int num_char_in_seq = p_input_data->num_char_in_seq[cur_seq_idx];
-				char *dst = &p_input_data->p_char_in_seq[cur_seq_idx][num_char_in_seq];
+			if(p_input_data->p_num_char_in_seq[cur_seq_idx]+read <= \
+				num_lines_in_seq[cur_seq_idx]){
+				int num_char_in_seq = p_input_data->p_num_char_in_seq[cur_seq_idx];
+				char *dst = &p_input_data->pp_char_in_seq[cur_seq_idx][num_char_in_seq];
 				char *src = line;
 				memcpy(dst, src, read*sizeof(char));
-				p_input_data->num_char_in_seq[cur_seq_idx] += read;
+				p_input_data->p_num_char_in_seq[cur_seq_idx] += read;
 			}
 			else{
 				printf("Error in sequence read. %d, %d, %ld, %s\n",
-					p_input_data->num_char_in_seq[cur_seq_idx], 
+					p_input_data->p_num_char_in_seq[cur_seq_idx], 
 					num_lines_in_seq[cur_seq_idx], read,
 					line);
 				exit(-1);
@@ -86,7 +137,13 @@ void read_input_sequence(char *filename, input_data_t *p_input_data){
         // printf("%s", line);
     }
 
-    // printf("List of sequences\n");
+    // printf("List of sequences %d\n", cur_seq_idx);
+    // for(int i=0; i<=cur_seq_idx; i++){
+    // 	printf("%d, %d, %d\n", i, p_input_data->p_num_char_in_seq[i],
+    // 		p_input_data->p_num_lines_in_seq[i]);
+    // }
+    // printf("\n");
+
     // for(int i=0;i<2;i++){
     // 	p_char_in_seq[i][num_char_in_seq[i]] = '\0';
     // 	printf("%s\n",p_char_in_seq[i]);
@@ -171,11 +228,11 @@ void read_alphabets(char *filename, alphabets_t *p_alphabets){
 // Convert all symbols to small
 void convert_to_small(input_data_t *p_input_data){
 	for(int i=0; i<2; i++){
-		for(int j=0; j<p_input_data->num_char_in_seq[i]; j++){
+		for(int j=0; j<p_input_data->p_num_char_in_seq[i]; j++){
 			// Value of "A" = 65. So if it is a capital letter
 			// convert it to a small value
-			if(p_input_data->p_char_in_seq[i][j] < (65+26)){
-				p_input_data->p_char_in_seq[i][j] += 32;
+			if(p_input_data->pp_char_in_seq[i][j] < (65+26)){
+				p_input_data->pp_char_in_seq[i][j] += 32;
 			}
 		}
 	}

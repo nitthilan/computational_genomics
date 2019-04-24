@@ -54,6 +54,7 @@ typedef struct _output_stat_t{
 	int num_gap;
 	int num_open_gap;
 	int opt_score;
+	// int alignment_offset[2];
 	char *p_output_trace; // Allocate 3x(m+n) to store the matching sequence
 }output_stat_t;
 

@@ -25,5 +25,10 @@ typedef struct _suffix_link_info_t_ {
 
 void st_construct_unoptimised(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root);
 void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root);
-
+void init_leaf_idx_range(st_node_t *p_root_node, int *leaf_idx_map, int *cur_arr_idx);
+st_node_t * find_node_matching_path(st_node_t *p_root_node, char *ref_seq, char *p_char_in_seq, 
+	int leaf_offset, int size_of_seq, int min_number_of_matches);
+st_node_t * find_node_matching_path_sl(st_node_t *p_root_node, char *ref_seq, char *p_char_in_seq, 
+	int leaf_offset, int size_of_seq, int min_number_of_matches);
+void dfs(st_node_t *p_root_node, input_data_t *p_input_data, int *p_max_depth);
 #endif //__SUFFIX_TREE_H__

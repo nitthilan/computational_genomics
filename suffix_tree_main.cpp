@@ -11,6 +11,7 @@
 
 // ./suffix_tree_main ../data/suffix_tree/s1.fas ../data/suffix_tree/English_alphabet.txt
 // ./suffix_tree_main ../data/suffix_tree/s2.fas ../data/suffix_tree/English_alphabet.tx
+// ./read_mapping_main ../data/hw3/Peach_reference.fasta ../data/hw3/Peach_simulated_reads.fasta
 
 
 int main(int argc, char **argv){
@@ -37,7 +38,13 @@ int main(int argc, char **argv){
 	// Read the input sequences
 	// char *p_char_in_seq[2];
 	input_data_t s_input_data;
-	read_input_sequence(p_fast_filename, &s_input_data);
+	char *p_char_in_seq[2];
+	int num_char_in_seq[2];
+	int num_lines_in_seq[2];
+	s_input_data.pp_char_in_seq = p_char_in_seq;
+	s_input_data.p_num_char_in_seq = num_char_in_seq;
+	s_input_data.p_num_lines_in_seq = num_lines_in_seq;
+	read_input_sequence(p_fast_filename, &s_input_data, 0, 1);
 	// convert_to_small(&s_input_data);
 	// Read alphabet file
 	alphabets_t s_alphabets;
@@ -50,8 +57,8 @@ int main(int argc, char **argv){
 
 	// free the allocated memory
 	for(int i=0;i<2;i++){
-		if(s_input_data.p_char_in_seq[i]){
-			free(s_input_data.p_char_in_seq[i]);
+		if(s_input_data.pp_char_in_seq[i]){
+			free(s_input_data.pp_char_in_seq[i]);
 		}
 	}
 }

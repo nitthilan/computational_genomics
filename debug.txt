@@ -1,0 +1,613 @@
+Kannappans-MacBook-Pro:build kannappanjayakodinitthilan$ ./read_mapping_main ../data/hw3/Peach_reference.fasta ../data/hw3/Peach_simulated_reads.fasta
+Reference: number of characters 5362495, 5451870
+Total time for construction 3.718091 seconds
+Maximum matching string 2422
+Total Number of Nodes 8945576, 56, 4, 8
+Read: num_seq 500000, ../data/hw3/Peach_simulated_reads.fasta
+Num sequence is 1
+Num sequence is 1001
+Num sequence is 2001
+Num sequence is 3001
+Num sequence is 4001
+Num sequence is 5001
+Num sequence is 6001
+Num sequence is 7001
+Num sequence is 8001
+Error in max length coverage 8771, 0.000000, 0.000000
+Num sequence is 9001
+Num sequence is 10001
+Num sequence is 11001
+Num sequence is 12001
+Num sequence is 13001
+Num sequence is 14001
+Num sequence is 15001
+Num sequence is 16001
+Num sequence is 17001
+Num sequence is 18001
+Num sequence is 19001
+Num sequence is 20001
+Num sequence is 21001
+Num sequence is 22001
+Error in max length coverage 22393, 0.000000, 0.000000
+Num sequence is 23001
+Num sequence is 24001
+Error in max length coverage 24799, 0.000000, 0.000000
+Num sequence is 25001
+Num sequence is 26001
+Num sequence is 27001
+Num sequence is 28001
+Num sequence is 29001
+Error in max length coverage 29609, 0.000000, 0.000000
+Num sequence is 30001
+Num sequence is 31001
+Num sequence is 32001
+Num sequence is 33001
+Num sequence is 34001
+Num sequence is 35001
+Num sequence is 36001
+Num sequence is 37001
+Num sequence is 38001
+Num sequence is 39001
+Num sequence is 40001
+Num sequence is 41001
+Num sequence is 42001
+Num sequence is 43001
+Num sequence is 44001
+Num sequence is 45001
+Error in max length coverage 45042, 0.000000, 0.000000
+Num sequence is 46001
+Num sequence is 47001
+Num sequence is 48001
+Num sequence is 49001
+Error in max length coverage 49074, 0.000000, 0.000000
+Num sequence is 50001
+Num sequence is 51001
+Num sequence is 52001
+Error in max length coverage 52806, 0.000000, 0.000000
+Num sequence is 53001
+Num sequence is 54001
+Num sequence is 55001
+Error in max length coverage 55734, 0.000000, 0.000000
+Num sequence is 56001
+Num sequence is 57001
+Num sequence is 58001
+Error in max length coverage 58019, 0.000000, 0.000000
+Error in max length coverage 58606, 0.000000, 0.000000
+Error in max length coverage 58762, 0.000000, 0.000000
+Num sequence is 59001
+Num sequence is 60001
+Num sequence is 61001
+Error in max length coverage 61997, 0.000000, 0.000000
+Num sequence is 62001
+Error in max length coverage 62119, 0.000000, 0.000000
+Num sequence is 63001
+Error in max length coverage 63905, 0.000000, 0.000000
+Num sequence is 64001
+Num sequence is 65001
+Error in max length coverage 65776, 0.864078, 0.977528
+Num sequence is 66001
+Error in max length coverage 66698, 0.000000, 0.000000
+Num sequence is 67001
+Num sequence is 68001
+Num sequence is 69001
+Error in max length coverage 69014, 0.000000, 0.000000
+Num sequence is 70001
+Num sequence is 71001
+Num sequence is 72001
+Num sequence is 73001
+Error in max length coverage 73813, 0.000000, 0.000000
+Num sequence is 74001
+Error in max length coverage 74382, 0.000000, 0.000000
+Num sequence is 75001
+Num sequence is 76001
+Num sequence is 77001
+Num sequence is 78001
+Error in max length coverage 78262, 0.000000, 0.000000
+Num sequence is 79001
+Error in max length coverage 79013, 0.000000, 0.000000
+Num sequence is 80001
+Num sequence is 81001
+Error in max length coverage 81523, 0.000000, 0.000000
+Num sequence is 82001
+Num sequence is 83001
+Num sequence is 84001
+Error in max length coverage 84377, 0.000000, 0.000000
+Num sequence is 85001
+Num sequence is 86001
+Error in max length coverage 86092, 0.000000, 0.000000
+Num sequence is 87001
+Num sequence is 88001
+Num sequence is 89001
+Num sequence is 90001
+Num sequence is 91001
+Num sequence is 92001
+Num sequence is 93001
+Num sequence is 94001
+Num sequence is 95001
+Num sequence is 96001
+Error in max length coverage 96220, 0.000000, 0.000000
+Num sequence is 97001
+Num sequence is 98001
+Num sequence is 99001
+Num sequence is 100001
+Num sequence is 101001
+Num sequence is 102001
+Num sequence is 103001
+Num sequence is 104001
+Num sequence is 105001
+Num sequence is 106001
+Num sequence is 107001
+Num sequence is 108001
+Num sequence is 109001
+Num sequence is 110001
+Num sequence is 111001
+Num sequence is 112001
+Num sequence is 113001
+Num sequence is 114001
+Num sequence is 115001
+Error in max length coverage 115417, 0.000000, 0.000000
+Num sequence is 116001
+Num sequence is 117001
+Num sequence is 118001
+Num sequence is 119001
+Num sequence is 120001
+Num sequence is 121001
+Error in max length coverage 121540, 0.000000, 0.000000
+Num sequence is 122001
+Num sequence is 123001
+Num sequence is 124001
+Num sequence is 125001
+Num sequence is 126001
+Num sequence is 127001
+Num sequence is 128001
+Num sequence is 129001
+Num sequence is 130001
+Num sequence is 131001
+Num sequence is 132001
+Num sequence is 133001
+Num sequence is 134001
+Error in max length coverage 134043, 0.000000, 0.000000
+Num sequence is 135001
+Num sequence is 136001
+Num sequence is 137001
+Num sequence is 138001
+Num sequence is 139001
+Error in max length coverage 139494, 0.000000, 0.000000
+Num sequence is 140001
+Error in max length coverage 140479, 0.000000, 0.000000
+Num sequence is 141001
+Error in max length coverage 141464, 0.000000, 0.000000
+Error in max length coverage 141685, 0.000000, 0.000000
+Num sequence is 142001
+Num sequence is 143001
+Num sequence is 144001
+Error in max length coverage 144010, 0.000000, 0.000000
+Num sequence is 145001
+Num sequence is 146001
+Num sequence is 147001
+Num sequence is 148001
+Num sequence is 149001
+Num sequence is 150001
+Num sequence is 151001
+Num sequence is 152001
+Num sequence is 153001
+Num sequence is 154001
+Num sequence is 155001
+Error in max length coverage 155102, 0.000000, 0.000000
+Num sequence is 156001
+Num sequence is 157001
+Num sequence is 158001
+Num sequence is 159001
+Num sequence is 160001
+Num sequence is 161001
+Error in max length coverage 161055, 0.805825, 0.987952
+Error in max length coverage 161074, 0.000000, 0.000000
+Num sequence is 162001
+Error in max length coverage 162255, 0.855670, 0.951807
+Num sequence is 163001
+Num sequence is 164001
+Error in max length coverage 164132, 0.000000, 0.000000
+Error in max length coverage 164753, 0.000000, 0.000000
+Num sequence is 165001
+Num sequence is 166001
+Num sequence is 167001
+Num sequence is 168001
+Num sequence is 169001
+Error in max length coverage 169804, 0.000000, 0.000000
+Num sequence is 170001
+Num sequence is 171001
+Num sequence is 172001
+Num sequence is 173001
+Num sequence is 174001
+Num sequence is 175001
+Num sequence is 176001
+Num sequence is 177001
+Num sequence is 178001
+Num sequence is 179001
+Num sequence is 180001
+Num sequence is 181001
+Num sequence is 182001
+Num sequence is 183001
+Num sequence is 184001
+Num sequence is 185001
+Num sequence is 186001
+Num sequence is 187001
+Error in max length coverage 187926, 0.000000, 0.000000
+Num sequence is 188001
+Num sequence is 189001
+Num sequence is 190001
+Num sequence is 191001
+Num sequence is 192001
+Num sequence is 193001
+Num sequence is 194001
+Num sequence is 195001
+Num sequence is 196001
+Num sequence is 197001
+Num sequence is 198001
+Num sequence is 199001
+Num sequence is 200001
+Num sequence is 201001
+Num sequence is 202001
+Num sequence is 203001
+Num sequence is 204001
+Error in max length coverage 204594, 0.000000, 0.000000
+Num sequence is 205001
+Num sequence is 206001
+Num sequence is 207001
+Num sequence is 208001
+Num sequence is 209001
+Num sequence is 210001
+Error in max length coverage 210790, 0.000000, 0.000000
+Num sequence is 211001
+Num sequence is 212001
+Num sequence is 213001
+Num sequence is 214001
+Error in max length coverage 214459, 0.000000, 0.000000
+Num sequence is 215001
+Num sequence is 216001
+Num sequence is 217001
+Num sequence is 218001
+Num sequence is 219001
+Num sequence is 220001
+Num sequence is 221001
+Num sequence is 222001
+Num sequence is 223001
+Num sequence is 224001
+Num sequence is 225001
+Num sequence is 226001
+Error in max length coverage 226902, 0.000000, 0.000000
+Num sequence is 227001
+Num sequence is 228001
+Error in max length coverage 228655, 0.000000, 0.000000
+Num sequence is 229001
+Num sequence is 230001
+Num sequence is 231001
+Error in max length coverage 231385, 0.000000, 0.000000
+Num sequence is 232001
+Num sequence is 233001
+Num sequence is 234001
+Num sequence is 235001
+Error in max length coverage 235190, 0.000000, 0.000000
+Num sequence is 236001
+Num sequence is 237001
+Num sequence is 238001
+Num sequence is 239001
+Num sequence is 240001
+Error in max length coverage 240147, 0.000000, 0.000000
+Num sequence is 241001
+Error in max length coverage 241282, 0.000000, 0.000000
+Num sequence is 242001
+Num sequence is 243001
+Num sequence is 244001
+Num sequence is 245001
+Num sequence is 246001
+Num sequence is 247001
+Num sequence is 248001
+Num sequence is 249001
+Num sequence is 250001
+Num sequence is 251001
+Num sequence is 252001
+Error in max length coverage 252336, 0.000000, 0.000000
+Num sequence is 253001
+Num sequence is 254001
+Num sequence is 255001
+Num sequence is 256001
+Num sequence is 257001
+Num sequence is 258001
+Num sequence is 259001
+Num sequence is 260001
+Num sequence is 261001
+Num sequence is 262001
+Error in max length coverage 262625, 0.000000, 0.000000
+Num sequence is 263001
+Num sequence is 264001
+Error in max length coverage 264284, 0.000000, 0.000000
+Num sequence is 265001
+Error in max length coverage 265263, 0.000000, 0.000000
+Num sequence is 266001
+Num sequence is 267001
+Num sequence is 268001
+Error in max length coverage 268532, 0.826923, 0.965116
+Num sequence is 269001
+Error in max length coverage 269542, 0.000000, 0.000000
+Error in max length coverage 269817, 0.000000, 0.000000
+Num sequence is 270001
+Num sequence is 271001
+Num sequence is 272001
+Error in max length coverage 272996, 0.000000, 0.000000
+Num sequence is 273001
+Num sequence is 274001
+Num sequence is 275001
+Num sequence is 276001
+Num sequence is 277001
+Num sequence is 278001
+Error in max length coverage 278047, 0.000000, 0.000000
+Num sequence is 279001
+Num sequence is 280001
+Num sequence is 281001
+Num sequence is 282001
+Num sequence is 283001
+Num sequence is 284001
+Error in max length coverage 284120, 0.000000, 0.000000
+Num sequence is 285001
+Num sequence is 286001
+Num sequence is 287001
+Num sequence is 288001
+Num sequence is 289001
+Num sequence is 290001
+Num sequence is 291001
+Num sequence is 292001
+Num sequence is 293001
+Num sequence is 294001
+Error in max length coverage 294267, 0.000000, 0.000000
+Error in max length coverage 294295, 0.000000, 0.000000
+Num sequence is 295001
+Num sequence is 296001
+Num sequence is 297001
+Num sequence is 298001
+Num sequence is 299001
+Error in max length coverage 299923, 0.000000, 0.000000
+Num sequence is 300001
+Num sequence is 301001
+Error in max length coverage 301224, 0.000000, 0.000000
+Num sequence is 302001
+Num sequence is 303001
+Num sequence is 304001
+Num sequence is 305001
+Num sequence is 306001
+Error in max length coverage 306378, 0.000000, 0.000000
+Error in max length coverage 306545, 0.000000, 0.000000
+Num sequence is 307001
+Num sequence is 308001
+Num sequence is 309001
+Num sequence is 310001
+Num sequence is 311001
+Num sequence is 312001
+Num sequence is 313001
+Num sequence is 314001
+Num sequence is 315001
+Error in max length coverage 315803, 0.000000, 0.000000
+Num sequence is 316001
+Num sequence is 317001
+Num sequence is 318001
+Num sequence is 319001
+Num sequence is 320001
+Num sequence is 321001
+Error in max length coverage 321594, 0.864583, 0.939759
+Num sequence is 322001
+Error in max length coverage 322169, 0.000000, 0.000000
+Num sequence is 323001
+Num sequence is 324001
+Error in max length coverage 324682, 0.000000, 0.000000
+Num sequence is 325001
+Num sequence is 326001
+Num sequence is 327001
+Error in max length coverage 327218, 0.000000, 0.000000
+Num sequence is 328001
+Num sequence is 329001
+Num sequence is 330001
+Num sequence is 331001
+Error in max length coverage 331973, 0.000000, 0.000000
+Num sequence is 332001
+Num sequence is 333001
+Num sequence is 334001
+Num sequence is 335001
+Num sequence is 336001
+Num sequence is 337001
+Num sequence is 338001
+Error in max length coverage 338495, 0.000000, 0.000000
+Num sequence is 339001
+Num sequence is 340001
+Num sequence is 341001
+Num sequence is 342001
+Num sequence is 343001
+Num sequence is 344001
+Num sequence is 345001
+Error in max length coverage 345042, 0.851485, 0.976744
+Num sequence is 346001
+Error in max length coverage 346474, 0.000000, 0.000000
+Num sequence is 347001
+Num sequence is 348001
+Num sequence is 349001
+Num sequence is 350001
+Num sequence is 351001
+Num sequence is 352001
+Error in max length coverage 352354, 0.000000, 0.000000
+Num sequence is 353001
+Error in max length coverage 353110, 0.000000, 0.000000
+Num sequence is 354001
+Error in max length coverage 354207, 0.000000, 0.000000
+Num sequence is 355001
+Num sequence is 356001
+Num sequence is 357001
+Num sequence is 358001
+Num sequence is 359001
+Num sequence is 360001
+Num sequence is 361001
+Error in max length coverage 361674, 0.000000, 0.000000
+Num sequence is 362001
+Error in max length coverage 362299, 0.000000, 0.000000
+Error in max length coverage 362633, 0.000000, 0.000000
+Num sequence is 363001
+Num sequence is 364001
+Num sequence is 365001
+Error in max length coverage 365682, 0.000000, 0.000000
+Num sequence is 366001
+Num sequence is 367001
+Num sequence is 368001
+Num sequence is 369001
+Error in max length coverage 369505, 0.000000, 0.000000
+Num sequence is 370001
+Num sequence is 371001
+Num sequence is 372001
+Num sequence is 373001
+Error in max length coverage 373622, 0.000000, 0.000000
+Num sequence is 374001
+Error in max length coverage 374562, 0.000000, 0.000000
+Num sequence is 375001
+Num sequence is 376001
+Error in max length coverage 376729, 0.000000, 0.000000
+Num sequence is 377001
+Num sequence is 378001
+Num sequence is 379001
+Num sequence is 380001
+Num sequence is 381001
+Num sequence is 382001
+Num sequence is 383001
+Num sequence is 384001
+Num sequence is 385001
+Num sequence is 386001
+Num sequence is 387001
+Num sequence is 388001
+Num sequence is 389001
+Error in max length coverage 389284, 0.000000, 0.000000
+Num sequence is 390001
+Error in max length coverage 390009, 0.865385, 0.933333
+Num sequence is 391001
+Error in max length coverage 391690, 0.000000, 0.000000
+Num sequence is 392001
+Num sequence is 393001
+Num sequence is 394001
+Num sequence is 395001
+Num sequence is 396001
+Num sequence is 397001
+Num sequence is 398001
+Error in max length coverage 398550, 0.000000, 0.000000
+Num sequence is 399001
+Num sequence is 400001
+Num sequence is 401001
+Num sequence is 402001
+Num sequence is 403001
+Num sequence is 404001
+Num sequence is 405001
+Num sequence is 406001
+Num sequence is 407001
+Num sequence is 408001
+Num sequence is 409001
+Num sequence is 410001
+Num sequence is 411001
+Num sequence is 412001
+Num sequence is 413001
+Num sequence is 414001
+Num sequence is 415001
+Num sequence is 416001
+Num sequence is 417001
+Num sequence is 418001
+Num sequence is 419001
+Num sequence is 420001
+Num sequence is 421001
+Num sequence is 422001
+Num sequence is 423001
+Num sequence is 424001
+Num sequence is 425001
+Num sequence is 426001
+Num sequence is 427001
+Num sequence is 428001
+Num sequence is 429001
+Error in max length coverage 429926, 0.000000, 0.000000
+Num sequence is 430001
+Num sequence is 431001
+Num sequence is 432001
+Num sequence is 433001
+Num sequence is 434001
+Error in max length coverage 434507, 0.000000, 0.000000
+Num sequence is 435001
+Num sequence is 436001
+Num sequence is 437001
+Error in max length coverage 437286, 0.000000, 0.000000
+Num sequence is 438001
+Num sequence is 439001
+Num sequence is 440001
+Num sequence is 441001
+Num sequence is 442001
+Num sequence is 443001
+Num sequence is 444001
+Num sequence is 445001
+Error in max length coverage 445680, 0.887755, 0.954023
+Num sequence is 446001
+Num sequence is 447001
+Num sequence is 448001
+Num sequence is 449001
+Error in max length coverage 449189, 0.000000, 0.000000
+Num sequence is 450001
+Error in max length coverage 450624, 0.000000, 0.000000
+Num sequence is 451001
+Num sequence is 452001
+Num sequence is 453001
+Num sequence is 454001
+Num sequence is 455001
+Num sequence is 456001
+Num sequence is 457001
+Num sequence is 458001
+Num sequence is 459001
+Num sequence is 460001
+Num sequence is 461001
+Num sequence is 462001
+Num sequence is 463001
+Error in max length coverage 463656, 0.000000, 0.000000
+Num sequence is 464001
+Num sequence is 465001
+Num sequence is 466001
+Num sequence is 467001
+Error in max length coverage 467297, 0.000000, 0.000000
+Num sequence is 468001
+Num sequence is 469001
+Num sequence is 470001
+Num sequence is 471001
+Error in max length coverage 471506, 0.000000, 0.000000
+Num sequence is 472001
+Num sequence is 473001
+Error in max length coverage 473107, 0.000000, 0.000000
+Error in max length coverage 473759, 0.878788, 0.988506
+Num sequence is 474001
+Num sequence is 475001
+Error in max length coverage 475564, 0.000000, 0.000000
+Num sequence is 476001
+Num sequence is 477001
+Num sequence is 478001
+Error in max length coverage 478429, 0.000000, 0.000000
+Num sequence is 479001
+Num sequence is 480001
+Error in max length coverage 480336, 0.000000, 0.000000
+Num sequence is 481001
+Num sequence is 482001
+Num sequence is 483001
+Num sequence is 484001
+Num sequence is 485001
+Num sequence is 486001
+Num sequence is 487001
+Num sequence is 488001
+Num sequence is 489001
+Num sequence is 490001
+Error in max length coverage 490059, 0.870000, 0.942529
+Num sequence is 491001
+Num sequence is 492001
+Num sequence is 493001
+Num sequence is 494001
+Num sequence is 495001
+Num sequence is 496001
+Num sequence is 497001
+Error in max length coverage 497149, 0.846154, 0.977273
+Num sequence is 498001
+Num sequence is 499001
+Kannappans-MacBook-Pro:build kannappanjayakodinitthilan$ 

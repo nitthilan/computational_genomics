@@ -72,6 +72,8 @@ st_node_t *create_node(int node_idx, int leaf_idx,
 	p_node->edge_label[1] = lbl_end_idx;
 	p_node->string_depth = parent_string_depth + lbl_end_idx - lbl_start_idx;
 	p_node->p_sibling = p_sibling;
+	p_node->leaf_idx_range[0] = -1;
+	p_node->leaf_idx_range[1] = -1;
 	return p_node;
 }
 
@@ -89,9 +91,46 @@ void fill_suffix_link_info(suffix_link_info_t *p_sl_info,
 	// p_sl_info->beta = beta;
 }
 
+void init_leaf_idx_range(st_node_t *p_root_node, int *leaf_idx_map, int *cur_arr_idx){
+	st_node_t *p_parent_node = p_root_node;
+	if(p_parent_node){
+		// If the current node is a leaf node initialise the leaf index mapping
+		if(p_parent_node->leaf_idx != -1){
+
+			leaf_idx_map[cur_arr_idx[0]] = p_parent_node->leaf_idx;
+
+			if(1){//p_parent_node->string_depth >= 25){
+				p_parent_node->leaf_idx_range[0] = cur_arr_idx[0];
+				p_parent_node->leaf_idx_range[1] = cur_arr_idx[0];
+			}
+			
+			// printf("Inc %d, ", cur_arr_idx[0]);
+			cur_arr_idx[0]++;
+		}
+		// Before calling the child initialise the left index [0]
+		// printf("0 %d, ", cur_arr_idx[0]);
+
+		init_leaf_idx_range(p_parent_node->p_child, leaf_idx_map, cur_arr_idx);
+		init_leaf_idx_range(p_parent_node->p_sibling, leaf_idx_map, cur_arr_idx);
+
+		// After processing all the children initialise left and right nodes
+		if(p_parent_node->leaf_idx == -1){
+			p_parent_node->leaf_idx_range[0] = p_parent_node->p_child->leaf_idx_range[0];
+			st_node_t *p_sib_node = p_parent_node->p_child;
+			// printf("child %d\n", p_parent_node->p_child);
+			while(p_sib_node->p_sibling){
+				p_sib_node = p_sib_node->p_sibling;
+			}
+			// printf("sibling %d\n", p_sib_node);
+			p_parent_node->leaf_idx_range[1] = p_sib_node->leaf_idx_range[1];
+		}
+
+	}
+}
+
 void dfs(st_node_t *p_root_node, input_data_t *p_input_data, int *p_max_depth){
-	char *p_char_in_seq = p_input_data->p_char_in_seq[0];
-	int num_char_in_seq = p_input_data->num_char_in_seq[0];
+	char *p_char_in_seq = p_input_data->pp_char_in_seq[0];
+	int num_char_in_seq = p_input_data->p_num_char_in_seq[0];
 
 	st_node_t *p_parent_node = p_root_node;
 	if(p_parent_node){
@@ -129,7 +168,7 @@ void dfs(st_node_t *p_root_node, input_data_t *p_input_data, int *p_max_depth){
 			if(p_parent_node->p_suffix){
 				suf_node_idx = p_parent_node->p_suffix->node_idx;
 			}
-			__PRINTF__("Node idx %d, %d, %d, %d [",p_parent_node->node_idx,
+			printf("Node idx %d, %d, %d, %d [",p_parent_node->node_idx,
 					p_parent_node->leaf_idx, p_parent_node->string_depth,
 					suf_node_idx);
 
@@ -138,20 +177,217 @@ void dfs(st_node_t *p_root_node, input_data_t *p_input_data, int *p_max_depth){
 				end_idx = p_parent_node->edge_label[0] + 10;
 			}
 			for(int i=p_parent_node->edge_label[0] ; i < end_idx; i++){
-				__PRINTF__("%c ", p_char_in_seq[i]);
+				printf("%c ", p_char_in_seq[i]);
 			}
-			__PRINTF__("] [");
+			printf("] [");
 			st_node_t *p_child = p_parent_node->p_child;
 			while(p_child){
-				__PRINTF__("%d ",p_child->node_idx);
+				printf("%d ",p_child->node_idx);
 				p_child = p_child->p_sibling;
 			}
-			__PRINTF__("]\n");
+			printf("]\n");
 		}
 
 		dfs(p_parent_node->p_sibling, p_input_data, p_max_depth);
 	}
 }
+
+st_node_t * find_node_matching_path(st_node_t *p_root_node, char *ref_seq,
+	char *p_char_in_seq, int leaf_offset, int size_of_seq, int min_number_of_matches){
+	// st_node_t *p_parent_node = p_root_node;
+	// st_node_t *p_prev_parent_node = p_sl_info->p_v_dash_node;
+	// printf("Find path %d %d %d\n", leaf_offset, size_of_seq, min_number_of_matches);
+
+	if(size_of_seq-min_number_of_matches < 0){
+		printf("This condition cannot happen %d, %d\n", size_of_seq, min_number_of_matches);
+		exit(-1);
+	}
+	st_node_t *max_match_depth_node = 0;
+	int max_num_matches = 0;
+	for(int j=leaf_offset; j<=size_of_seq-min_number_of_matches; j++){
+		int num_matches = 0;
+		st_node_t *p_parent_node = p_root_node;
+		// st_node_t *p_prev_parent_node = p_root_node;
+		int cur_char_offset = j;
+		// printf("Matching offset %d, %d\n", j, size_of_seq-min_number_of_matches);
+
+		// Iterate the depth of the tree from root to leaf
+		while(p_parent_node){
+			// Compare the edge label of each children starting from the leftmost sibling
+			st_node_t *p_sib_node = p_parent_node->p_child;
+			st_node_t *p_prev_sib_node = 0;
+			// Iterate through all the sibling till you find a match
+			int is_match_found = 0;
+			int partial_match_offset = 0, start_idx, end_idx;
+			while(p_sib_node){
+				start_idx = p_sib_node->edge_label[0];
+				end_idx = p_sib_node->edge_label[1];
+				// printf("Comparing values %c, %c\n", p_char_in_seq[cur_char_offset], ref_seq[start_idx]);
+				// If one character matches then node exist
+				if(p_char_in_seq[cur_char_offset] == ref_seq[start_idx]){
+					is_match_found = 1;
+					for(int i = 0; i < end_idx-start_idx ; i++){
+						if(p_char_in_seq[cur_char_offset+i] != ref_seq[start_idx+i]){
+							// It is a partial match
+							partial_match_offset = i;
+							is_match_found = 2;
+							break;
+						}
+					}
+					break;
+				}
+				// if the character did not match and character is lesser than current value
+				// it is a mismatch
+				else if(p_char_in_seq[cur_char_offset] <= ref_seq[start_idx]){
+					break;
+				}
+				p_prev_sib_node = p_sib_node;
+				p_sib_node = p_sib_node->p_sibling;
+			}
+			// is_match_found = 1 : Its a perfect match and so need to goto the next node
+			if(is_match_found == 1){
+				// Make the current sibling as the next parent and go down the tree
+				// p_prev_parent_node = p_parent_node;
+				p_parent_node = p_sib_node;
+				cur_char_offset += (end_idx-start_idx);
+				num_matches += (end_idx-start_idx);
+				if(num_matches != p_parent_node->string_depth){
+					printf("Error in string depth %d, %d\n", num_matches, p_parent_node->string_depth);
+				}
+				// printf("Error in string depth %d, %d\n", num_matches, p_parent_node->string_depth);
+
+				// printf("matched value %d, %d, %d\n", j, num_matches, p_parent_node->node_idx);
+			}
+			else{
+				num_matches += partial_match_offset;
+				// st_node_t *p_matching_node;
+				// if(is_match_found == 0) p_matching_node = p_parent_node;
+				// else p_matching_node = p_prev_parent_node;
+
+				// printf("partial matched value %d, %d\n", j, num_matches);
+				if(num_matches > max_num_matches && num_matches >= min_number_of_matches){
+				// if(num_matches > max_num_matches && p_parent_node->string_depth >= min_number_of_matches){
+
+					// if(is_match_found == 0) max_match_depth_node = p_parent_node;
+					// else max_match_depth_node = p_prev_parent_node;
+					max_match_depth_node = p_parent_node;
+
+					// printf("The matching %d, %d, %d, %d, %d, %d\n", max_match_depth_node->leaf_idx_range[0],
+					// 	max_match_depth_node->leaf_idx_range[1], num_matches, is_match_found,
+					// 	max_match_depth_node->string_depth, partial_match_offset);
+
+					max_num_matches = num_matches;
+				}
+				break;
+			}
+		}
+	}
+
+	// printf("Final return %d, %d\n", max_num_matches, max_match_depth_node);
+	return max_match_depth_node;
+}
+
+st_node_t * find_node_matching_path_sl(st_node_t *p_root_node, char *ref_seq,
+	char *p_char_in_seq, int leaf_offset, int size_of_seq, int min_number_of_matches){
+	// st_node_t *p_parent_node = p_root_node;
+	// st_node_t *p_prev_parent_node = p_sl_info->p_v_dash_node;
+	// printf("Find path %d %d %d\n", leaf_offset, size_of_seq, min_number_of_matches);
+
+	if(size_of_seq-min_number_of_matches < 0){
+		printf("This condition cannot happen %d, %d\n", size_of_seq, min_number_of_matches);
+		exit(-1);
+	}
+	st_node_t *max_match_depth_node = 0;
+	int max_num_matches = 0;
+	int num_matches = 0;
+	st_node_t *p_parent_node = p_root_node;
+	st_node_t *p_prev_parent_node = p_root_node;
+	int cur_char_offset = leaf_offset;
+	for(int j=leaf_offset; j<=size_of_seq-min_number_of_matches; j++){
+		
+		// printf("Matching offset %d, %d\n", j, size_of_seq-min_number_of_matches);
+
+		// Iterate the depth of the tree from root to leaf
+		while(p_parent_node){
+			// Compare the edge label of each children starting from the leftmost sibling
+			st_node_t *p_sib_node = p_parent_node->p_child;
+			st_node_t *p_prev_sib_node = 0;
+			// Iterate through all the sibling till you find a match
+			int is_match_found = 0;
+			int partial_match_offset = 0, start_idx, end_idx;
+			while(p_sib_node){
+				start_idx = p_sib_node->edge_label[0];
+				end_idx = p_sib_node->edge_label[1];
+				// printf("Comparing values %c, %c\n", p_char_in_seq[cur_char_offset], ref_seq[start_idx]);
+				// If one character matches then node exist
+				if(p_char_in_seq[cur_char_offset] == ref_seq[start_idx]){
+					is_match_found = 1;
+					for(int i = 0; i < end_idx-start_idx ; i++){
+						if(p_char_in_seq[cur_char_offset+i] != ref_seq[start_idx+i]){
+							// It is a partial match
+							partial_match_offset = i;
+							is_match_found = 2;
+							break;
+						}
+					}
+					break;
+				}
+				// if the character did not match and character is lesser than current value
+				// it is a mismatch
+				else if(p_char_in_seq[cur_char_offset] <= ref_seq[start_idx]){
+					break;
+				}
+				p_prev_sib_node = p_sib_node;
+				p_sib_node = p_sib_node->p_sibling;
+			}
+			// is_match_found = 1 : Its a perfect match and so need to goto the next node
+			if(is_match_found == 1){
+				// Make the current sibling as the next parent and go down the tree
+				p_prev_parent_node = p_parent_node;
+				p_parent_node = p_sib_node;
+				cur_char_offset += (end_idx-start_idx);
+				num_matches += (end_idx-start_idx);
+				// printf("matched value %d, %d, %d\n", j, num_matches, p_parent_node->node_idx);
+			}
+			else{
+				num_matches += partial_match_offset;
+				// printf("partial matched value %d, %d, %d\n", j, num_matches, p_parent_node->node_idx);
+				if(num_matches > max_num_matches && num_matches >= min_number_of_matches){
+
+					if(is_match_found == 0) max_match_depth_node = p_parent_node;
+					else max_match_depth_node = p_prev_parent_node;
+
+					// printf("The matching %d, %d, %d, %d\n", p_parent_node->leaf_idx_range[0],
+					// 	p_parent_node->leaf_idx_range[1], num_matches, is_match_found);
+
+					max_num_matches = num_matches;
+				}
+
+				// Initialise the values for the next offset
+				num_matches -= (partial_match_offset+1);
+				if(is_match_found == 0) {
+					p_parent_node = p_parent_node->p_suffix;
+					p_prev_parent_node = p_parent_node;
+				}
+				else {
+					p_parent_node = p_prev_parent_node->p_suffix;
+					p_prev_parent_node = p_parent_node;
+				}
+				// cur_char_offset += 1;
+				if(p_parent_node->node_idx == 0){
+					cur_char_offset = j+1;
+					num_matches = 0;
+				}
+				// printf("next offset %d, %d, %d\n", cur_char_offset, num_matches, p_parent_node->node_idx);
+				break;
+			}
+		}
+	}
+
+	// printf("Final return %d, %d\n", max_num_matches, max_match_depth_node);
+	return max_match_depth_node;
+}
+
 
 void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int size_of_seq,
 	suffix_link_info_t *p_sl_info, int leaf_idx){
@@ -269,53 +505,6 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 			// Update the suffix link info
 			fill_suffix_link_info(p_sl_info, p_new_node, p_parent_node);
 			break;
-
-#if 0
-			// Create a intemediate node and introduce the sequence as its child
-			st_node_t *p_new_node = create_node(-1, p_sib_node->leaf_idx, p_sib_node->p_suffix, 
-				p_sib_node->p_child /*child */, 
-				p_sib_node->edge_label[0] + partial_match_offset, 
-				p_sib_node->edge_label[1], 
-				parent_string_depth, 
-				(st_node_t *)0 /*Update this after comparing between the two new nodes */);
-			// Update the sibling with the partial node information
-			p_sib_node->edge_label[1] = p_sib_node->edge_label[0] + partial_match_offset;
-			p_sib_node->leaf_idx = -1;
-			p_sib_node->string_depth = parent_string_depth;
-			p_sib_node->p_suffix = (st_node_t *)0;
-
-			st_node_t *p_new_leaf_node = create_node(-1, leaf_idx, (st_node_t *)0 /*TBD*/, 
-				(st_node_t *)0 /*child */, 
-				cur_char_offset + partial_match_offset, size_of_seq, 
-				parent_string_depth, 
-				(st_node_t *)0 /*Update this after comparing between the two new nodes */);
-
-			// if(p_new_leaf_node->node_idx == 46 || p_new_node->node_idx == 46){
-			// 	printf("The sigling node %d\n", p_sib_node->node_idx);
-			// 	exit(-1);
-			// }
-
-			// Maintaining the ordering of siblings
-			if(p_char_in_seq[p_sib_node->edge_label[0] + partial_match_offset] < 
-			   p_char_in_seq[cur_char_offset + partial_match_offset]){
-			   	p_sib_node->p_child = p_new_node;
-				p_new_node->p_sibling = p_new_leaf_node;
-				p_new_leaf_node->p_sibling = (st_node_t *)0;
-			}
-			else{
-				p_sib_node->p_child = p_new_leaf_node;
-				p_new_leaf_node->p_sibling = p_new_node;
-				p_new_node->p_sibling = (st_node_t *)0;
-			}
-			// Update the suffix link info
-			if(p_sib_node->p_suffix){
-				fill_suffix_link_info(p_sl_info, p_sib_node, (st_node_t *)0);
-			}
-			else{
-				fill_suffix_link_info(p_sl_info, p_sib_node, p_parent_node);
-			}
-			break;
-#endif
 		}
 
 		// is_match_found = 1 : Its a perfect match and so need to goto the next node
@@ -330,8 +519,8 @@ void find_path(st_node_t *p_root_node, char *p_char_in_seq, int leaf_offset, int
 
 void st_construct_unoptimised(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root){
 
-	char *p_char_in_seq = p_input_data->p_char_in_seq[0];
-	int num_char_in_seq = p_input_data->num_char_in_seq[0];
+	char *p_char_in_seq = p_input_data->pp_char_in_seq[0];
+	int num_char_in_seq = p_input_data->p_num_char_in_seq[0];
 
 	// Append $ at the end of sequence
 	p_char_in_seq[num_char_in_seq] = '$';
@@ -548,14 +737,14 @@ void node_hop(suffix_link_info_t *p_sl_info, char *p_char_in_seq){
 
 void st_construct(input_data_t *p_input_data, alphabets_t *p_alphabets, st_node_t **pp_st_root){
 
-	char *p_char_in_seq = p_input_data->p_char_in_seq[0];
-	int num_char_in_seq = p_input_data->num_char_in_seq[0];
+	char *p_char_in_seq = p_input_data->pp_char_in_seq[0];
+	int num_char_in_seq = p_input_data->p_num_char_in_seq[0];
 
 	// Append $ at the end of sequence
 	p_char_in_seq[num_char_in_seq] = '$';
 	num_char_in_seq += 1;
 	p_char_in_seq[num_char_in_seq] = 0;
-	p_input_data->num_char_in_seq[0] = num_char_in_seq;
+	p_input_data->p_num_char_in_seq[0] = num_char_in_seq;
 
 	// check whether the last character is $
 	if(p_char_in_seq[num_char_in_seq-1] != '$'){
